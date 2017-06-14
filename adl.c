@@ -16,7 +16,11 @@
 #include <math.h>
 
 #ifdef HAVE_CURSES
-# include <curses.h>
+#if defined(__MINGW32__)
+#include <ncurses/curses.h>
+#else
+#include <curses.h>
+#endif // defined(__MINGW32__)
 #endif
 
 #include "miner.h"

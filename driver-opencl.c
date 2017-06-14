@@ -12,7 +12,11 @@
 #include "config.h"
 
 #ifdef HAVE_CURSES
+#if defined(__MINGW32__)
+#include <ncurses/curses.h>
+#else
 #include <curses.h>
+#endif // defined(__MINGW32__)
 #endif
 
 #include <string.h>

@@ -27,7 +27,7 @@ endif
 sgminer_CPPFLAGS += $(ADL_CPPFLAGS)
 
 if USE_GIT_VERSION
-GIT_VERSION      := $(shell sh -c 'git describe --abbrev=4 --dirty')
+GIT_VERSION      := $(shell sh -c 'git describe --tags --abbrev=4 --dirty')
 sgminer_CPPFLAGS += -DGIT_VERSION=\"$(GIT_VERSION)\"
 endif
 
