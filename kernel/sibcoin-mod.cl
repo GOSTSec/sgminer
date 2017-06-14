@@ -266,7 +266,7 @@ __kernel void search1(__global hash_t* hashes)
     (SHR(q[i+13], 2) ^ SHL(q[i+13], 1) ^ SPH_ROTL64(q[i+13], 19) ^ SPH_ROTL64(q[i+13], 53)) +
     (SHR(q[i+14], 2) ^ SHL(q[i+14], 2) ^ SPH_ROTL64(q[i+14], 28) ^ SPH_ROTL64(q[i+14], 59)) +
     (SHR(q[i+15], 1) ^ SHL(q[i+15], 3) ^ SPH_ROTL64(q[i+15], 4) ^ SPH_ROTL64(q[i+15], 37)) +
-    (( ((i+16)*(0x0555555555555555ull)) + SPH_ROTL64(mv[i], i+1) +
+    (( ((i+16)*(0x0555555555555555ul)) + SPH_ROTL64(mv[i], i+1) +
     SPH_ROTL64(mv[i+3], i+4) - SPH_ROTL64(mv[i+10], i+11) ) ^ BMW_H[i+7]);
   }
 
@@ -274,7 +274,7 @@ __kernel void search1(__global hash_t* hashes)
   for(int i=2;i<6;i++)
   {
   q[i+16] = CONST_EXP2 +
-    (( ((i+16)*(0x0555555555555555ull)) + SPH_ROTL64(mv[i], i+1) +
+    (( ((i+16)*(0x0555555555555555ul)) + SPH_ROTL64(mv[i], i+1) +
     SPH_ROTL64(mv[i+3], i+4) - SPH_ROTL64(mv[i+10], i+11) ) ^ BMW_H[i+7]);
   }
 
@@ -282,7 +282,7 @@ __kernel void search1(__global hash_t* hashes)
   for(int i=6;i<9;i++)
   {
   q[i+16] = CONST_EXP2 +
-    (( ((i+16)*(0x0555555555555555ull)) + SPH_ROTL64(mv[i], i+1) +
+    (( ((i+16)*(0x0555555555555555ul)) + SPH_ROTL64(mv[i], i+1) +
     SPH_ROTL64(mv[i+3], i+4) - SPH_ROTL64(mv[i-6], (i-6)+1) ) ^ BMW_H[i+7]);
   }
 
@@ -290,7 +290,7 @@ __kernel void search1(__global hash_t* hashes)
   for(int i=9;i<13;i++)
   {
   q[i+16] = CONST_EXP2 +
-    (( ((i+16)*(0x0555555555555555ull)) + SPH_ROTL64(mv[i], i+1) +
+    (( ((i+16)*(0x0555555555555555ul)) + SPH_ROTL64(mv[i], i+1) +
     SPH_ROTL64(mv[i+3], i+4) - SPH_ROTL64(mv[i-6], (i-6)+1) ) ^ BMW_H[i-9]);
   }
 
@@ -298,7 +298,7 @@ __kernel void search1(__global hash_t* hashes)
   for(int i=13;i<16;i++)
   {
   q[i+16] = CONST_EXP2 +
-    (( ((i+16)*(0x0555555555555555ull)) + SPH_ROTL64(mv[i], i+1) +
+    (( ((i+16)*(0x0555555555555555ul)) + SPH_ROTL64(mv[i], i+1) +
     SPH_ROTL64(mv[i-13], (i-13)+1) - SPH_ROTL64(mv[i-6], (i-6)+1) ) ^ BMW_H[i-9]);
   }
 
@@ -327,7 +327,7 @@ __kernel void search1(__global hash_t* hashes)
   for(int i=0;i<16;i++)
   {
   mv[i] = BMW_H[i];
-  BMW_H[i] = 0xaaaaaaaaaaaaaaa0ull + (sph_u64)i;
+  BMW_H[i] = 0xaaaaaaaaaaaaaaa0ul + (sph_u64)i;
   }
 
   tmp = (mv[5] ^ BMW_H[5]) - (mv[7] ^ BMW_H[7]) + (mv[10] ^ BMW_H[10]) + (mv[13] ^ BMW_H[13]) + (mv[14] ^ BMW_H[14]);
@@ -383,7 +383,7 @@ __kernel void search1(__global hash_t* hashes)
     (SHR(q[i+13], 2) ^ SHL(q[i+13], 1) ^ SPH_ROTL64(q[i+13], 19) ^ SPH_ROTL64(q[i+13], 53)) +
     (SHR(q[i+14], 2) ^ SHL(q[i+14], 2) ^ SPH_ROTL64(q[i+14], 28) ^ SPH_ROTL64(q[i+14], 59)) +
     (SHR(q[i+15], 1) ^ SHL(q[i+15], 3) ^ SPH_ROTL64(q[i+15], 4) ^ SPH_ROTL64(q[i+15], 37)) +
-    (( ((i+16)*(0x0555555555555555ull)) + SPH_ROTL64(mv[i], i+1) +
+    (( ((i+16)*(0x0555555555555555ul)) + SPH_ROTL64(mv[i], i+1) +
     SPH_ROTL64(mv[i+3], i+4) - SPH_ROTL64(mv[i+10], i+11) ) ^ BMW_H[i+7]);
   }
 
@@ -391,7 +391,7 @@ __kernel void search1(__global hash_t* hashes)
   for(int i=2;i<6;i++)
   {
   q[i+16] = CONST_EXP2 +
-    (( ((i+16)*(0x0555555555555555ull)) + SPH_ROTL64(mv[i], i+1) +
+    (( ((i+16)*(0x0555555555555555ul)) + SPH_ROTL64(mv[i], i+1) +
     SPH_ROTL64(mv[i+3], i+4) - SPH_ROTL64(mv[i+10], i+11) ) ^ BMW_H[i+7]);
   }
 
@@ -399,7 +399,7 @@ __kernel void search1(__global hash_t* hashes)
   for(int i=6;i<9;i++)
   {
   q[i+16] = CONST_EXP2 +
-    (( ((i+16)*(0x0555555555555555ull)) + SPH_ROTL64(mv[i], i+1) +
+    (( ((i+16)*(0x0555555555555555ul)) + SPH_ROTL64(mv[i], i+1) +
     SPH_ROTL64(mv[i+3], i+4) - SPH_ROTL64(mv[i-6], (i-6)+1) ) ^ BMW_H[i+7]);
   }
 
@@ -407,7 +407,7 @@ __kernel void search1(__global hash_t* hashes)
   for(int i=9;i<13;i++)
   {
   q[i+16] = CONST_EXP2 +
-    (( ((i+16)*(0x0555555555555555ull)) + SPH_ROTL64(mv[i], i+1) +
+    (( ((i+16)*(0x0555555555555555ul)) + SPH_ROTL64(mv[i], i+1) +
     SPH_ROTL64(mv[i+3], i+4) - SPH_ROTL64(mv[i-6], (i-6)+1) ) ^ BMW_H[i-9]);
   }
 
@@ -415,7 +415,7 @@ __kernel void search1(__global hash_t* hashes)
   for(int i=13;i<16;i++)
   {
   q[i+16] = CONST_EXP2 +
-    (( ((i+16)*(0x0555555555555555ull)) + SPH_ROTL64(mv[i], i+1) +
+    (( ((i+16)*(0x0555555555555555ul)) + SPH_ROTL64(mv[i], i+1) +
     SPH_ROTL64(mv[i-13], (i-13)+1) - SPH_ROTL64(mv[i-6], (i-6)+1) ) ^ BMW_H[i-9]);
   }
 
