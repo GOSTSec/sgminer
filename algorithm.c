@@ -505,9 +505,7 @@ static cl_int queue_gostcoin_mod_kernel(struct __clState *clState, struct _dev_b
   flip80(clState->cldata, blk->work->data);
   status = clEnqueueWriteBuffer(clState->commandQueue, clState->CLbuffer0, true, 0, 80, clState->cldata, 0, NULL, NULL);
 
-  // TODO:
-  num = 0;
-  CL_NEXTKERNEL_SET_ARG(clState->padbuffer8);
+  CL_SET_ARG(clState->CLbuffer0);
   CL_SET_ARG(clState->outputBuffer);
   CL_SET_ARG(le_target);
 
@@ -1331,6 +1329,7 @@ static const char *lookup_algorithm_alias(const char *lookup_alias, uint8_t *nfa
   ALGO_ALIAS("lyra2v2", "lyra2rev2");
   ALGO_ALIAS("blakecoin", "blake256r8");
   ALGO_ALIAS("blake", "blake256r14");
+  ALGO_ALIAS("gostd", "gostcoin-mod");	
 
 #undef ALGO_ALIAS
 #undef ALGO_ALIAS_NF
