@@ -496,7 +496,7 @@ static cl_int queue_sibcoin_mod_kernel(struct __clState *clState, struct _dev_bl
 
 static cl_int queue_gostcoin_mod_kernel(struct __clState *clState, struct _dev_blk_ctx *blk, __maybe_unused cl_uint threads)
 {
-  cl_kernel *kernel;
+  cl_kernel *kernel = &clState->kernel;
   unsigned int num;
   cl_ulong le_target;
   cl_int status = 0;
