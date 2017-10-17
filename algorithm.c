@@ -9,6 +9,7 @@
 
 #include "algorithm.h"
 #include "sph/sph_sha2.h"
+#include "sph/sph_gost.h"
 #include "ocl.h"
 #include "ocl/build_kernel.h"
 
@@ -104,6 +105,13 @@ void gen_hash(const unsigned char *data, unsigned int len, unsigned char *hash)
   sph_sha256_close(&ctx_sha2, hash1);
   sph_sha256(&ctx_sha2, hash1, 32);
   sph_sha256_close(&ctx_sha2, hash);
+}
+
+void gostcoin_gen_hash(const unsigned char *data, unsigned int len, unsigned char *hash)
+{
+	unsigned char h1[64];
+	sph_gost512(h1, (const void*)data, len);
+	sph_gost256(hash, (const void*)h1, 64);
 }
 
 void sha256d_midstate(struct work *work)
@@ -1249,7 +1257,8 @@ static algorithm_settings_t algos[] = {
 
   { "pascal", ALGO_PASCAL, "", 1, 1, 1, 0, 0, 0xFF, 0xFFFFULL, 0x0000ffffUL, 0, 0, CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, pascal_regenhash, pascal_midstate, NULL, queue_pascal_kernel, NULL, NULL },
 
-  { "gostcoin-mod", ALGO_GOSTCOIN, "", 1, 256, 256, 0, 0, 0xFF, 0xFFFFULL, 0x0000ffffUL, 2, 4 * 8 * 4194304, 0, gostcoin_regenhash, NULL, NULL, queue_gostcoin_mod_kernel, NULL, NULL },	
+
+ { "gostcoin-mod", ALGO_GOSTCOIN, "", 1, 1, 1, 0, 0, 0xFF, 0xFFFFULL, 0x0000ffffUL, 0, 4 * 8 * 4194304, 0, gostcoin_regenhash, NULL, NULL, queue_gostcoin_mod_kernel, gostcoin_gen_hash, NULL },	
 
   // Terminator (do not remove)
   { NULL, ALGO_UNK, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL }

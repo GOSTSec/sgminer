@@ -6145,13 +6145,17 @@ static void gen_stratum_work(struct pool *pool, struct work *work)
 
   /* Downgrade to a read lock to read off the pool variables */
   cg_dwlock(&pool->data_lock);
-
+	
   if (pool->algorithm.type != ALGO_DECRED && pool->algorithm.type != ALGO_SIA && pool->algorithm.type != ALGO_PASCAL) {
     /* Generate merkle root */
     pool->algorithm.gen_hash(pool->coinbase, pool->swork.cb_len, merkle_root);
     memcpy(merkle_sha, merkle_root, 32);
-    for (i = 0; i < pool->swork.merkles; i++) {
-      memcpy(merkle_sha + 32, pool->swork.merkle_bin[i], 32);
+    for (i = 0; i < pool->swork.merkles; i++) 
+	{
+	  if (pool->algorithm.type != ALGO_GOSTCOIN) // TODO: remove after hard fork 1	
+		memcpy(merkle_sha + 32, merkle_sha, 32); 	
+	  else		
+      	memcpy(merkle_sha + 32, pool->swork.merkle_bin[i], 32);
       gen_hash(merkle_sha, 64, merkle_root);
       memcpy(merkle_sha, merkle_root, 32);
     }
