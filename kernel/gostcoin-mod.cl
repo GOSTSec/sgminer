@@ -929,7 +929,7 @@ __kernel void search(__global unsigned char* block, volatile __global uint* outp
     hash1[7] += 0x0100000000000000;
     GOST_g_0(hash, hash1);		
     // result is first 32 bytes of hash
-	if (SWAP4 (LODWORD (hash[0])) <= HIDWORD (target) && SWAP4 (HIDWORD (hash[0])) <= LODWORD (target))
+	if (SWAP8 (hash[0]) <= target)
 		output[output[0xFF]++] = SWAP4 (nonce); 
 }
 
