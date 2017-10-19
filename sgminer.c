@@ -1992,7 +1992,7 @@ static bool __build_gbt_txns(struct pool *pool, json_t *res_val)
     if (unlikely(!hex2bin(txn_bin, txn, txn_len / 2)))
       quit(1, "Failed to hex2bin txn_bin");
 
-    gen_hash(txn_bin, txn_len / 2, pool->txn_hashes + (32 * i));
+    pool->algorithm.gen_hash(txn_bin, txn_len / 2, pool->txn_hashes + (32 * i));
     free(txn_bin);
   }
 out:
@@ -2008,7 +2008,7 @@ static unsigned char *__gbt_merkleroot(struct pool *pool)
   if (unlikely(!merkle_hash))
     quit(1, "Failed to calloc merkle_hash in __gbt_merkleroot");
 
-  gen_hash(pool->coinbase, pool->coinbase_len, merkle_hash);
+  pool->algorithm.gen_hash(pool->coinbase, pool->coinbase_len, merkle_hash);
 
   if (pool->gbt_txns)
     memcpy(merkle_hash + 32, pool->txn_hashes, pool->gbt_txns * 32);
@@ -2022,7 +2022,7 @@ static unsigned char *__gbt_merkleroot(struct pool *pool)
     for (i = 0; i < txns; i += 2){
       unsigned char hashout[32];
 
-      gen_hash(merkle_hash + (i * 32), 64, hashout);
+      pool->algorithm.gen_hash(merkle_hash + (i * 32), 64, hashout);
       memcpy(merkle_hash + (i / 2 * 32), hashout, 32);
     }
     txns /= 2;
