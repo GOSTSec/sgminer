@@ -36,14 +36,12 @@
 #include "algorithm/lyra2re.h"
 #include "algorithm/lyra2rev2.h"
 #include "algorithm/pluck.h"
-#include "algorithm/yescrypt.h"
 #include "algorithm/credits.h"
 #include "algorithm/blake256.h"
 #include "algorithm/blakecoin.h"
 #include "algorithm/sia.h"
 #include "algorithm/decred.h"
 #include "algorithm/pascal.h"
-#include "algorithm/lbry.h"
 #include "algorithm/sibcoin.h"
 #include "algorithm/gostcoin.h"
 
@@ -72,16 +70,13 @@ const char *algorithm_type_str[] = {
   "Neoscrypt",
   "WhirlpoolX",
   "Lyra2RE",
-  "Lyra2REV2"
-  "Pluck"
-  "Yescrypt",
-  "Yescrypt-multi",
+  "Lyra2REV2",
+  "Pluck",
   "Blakecoin",
   "Blake",
   "Sia",
   "Decred",
   "Vanilla",
-  "Lbry",
   "Sibcoin",
   "Gostcoin"
 };
@@ -280,100 +275,6 @@ static cl_int queue_credits_kernel(_clState *clState, dev_blk_ctx *blk, __maybe_
   CL_SET_ARG(clState->outputBuffer);
   CL_SET_ARG(le_target);
   CL_SET_ARG(blk->work->midstate);
-
-  return status;
-}
-
-static cl_int queue_yescrypt_kernel(_clState *clState, dev_blk_ctx *blk, __maybe_unused cl_uint threads)
-{
-  cl_kernel *kernel = &clState->kernel;
-  unsigned int num = 0;
-  cl_uint le_target;
-  cl_int status = 0;
-
-
-//  le_target = (*(cl_uint *)(blk->work->device_target + 28));
-  le_target = (cl_uint)le32toh(((uint32_t *)blk->work->/*device_*/target)[7]);
-//  le_target = (cl_uint)((uint32_t *)blk->work->target)[7];
-
-
-//  memcpy(clState->cldata, blk->work->data, 80);
-  flip80(clState->cldata, blk->work->data);
-  status = clEnqueueWriteBuffer(clState->commandQueue, clState->CLbuffer0, true, 0, 80, clState->cldata, 0, NULL, NULL);
-
-  CL_SET_ARG(clState->CLbuffer0);
-  CL_SET_ARG(clState->outputBuffer);
-  CL_SET_ARG(clState->padbuffer8);
-  CL_SET_ARG(clState->buffer1);
-  CL_SET_ARG(clState->buffer2);
-  CL_SET_ARG(le_target);
-
-  return status;
-}
-
-static cl_int queue_yescrypt_multikernel(_clState *clState, dev_blk_ctx *blk, __maybe_unused cl_uint threads)
-{
-//  cl_kernel *kernel = &clState->kernel;
-  cl_kernel *kernel;
-  unsigned int num = 0;
-  cl_uint le_target;
-  cl_int status = 0;
-
-
-  //  le_target = (*(cl_uint *)(blk->work->device_target + 28));
-  le_target = (cl_uint)le32toh(((uint32_t *)blk->work->/*device_*/target)[7]);
-  memcpy(clState->cldata, blk->work->data, 80);
-//  flip80(clState->cldata, blk->work->data);
-  status = clEnqueueWriteBuffer(clState->commandQueue, clState->CLbuffer0, true, 0, 80, clState->cldata, 0, NULL, NULL);
-//pbkdf and initial sha
-  kernel = &clState->kernel;
-
-  CL_SET_ARG(clState->CLbuffer0);
-  CL_SET_ARG(clState->outputBuffer);
-  CL_SET_ARG(clState->padbuffer8);
-  CL_SET_ARG(clState->buffer1);
-  CL_SET_ARG(clState->buffer2);
-  CL_SET_ARG(clState->buffer3);
-  CL_SET_ARG(le_target);
-
-//inactive kernel
-  num = 0;
-  kernel = clState->extra_kernels;
-  CL_SET_ARG_N(0,clState->buffer1);
-  CL_SET_ARG_N(1,clState->buffer2);
-//  CL_SET_ARG_N(3, clState->buffer3);
-
-//mix2_2
-  num = 0;
-  CL_NEXTKERNEL_SET_ARG_N(0, clState->padbuffer8);
-  CL_SET_ARG_N(1,clState->buffer1);
-  CL_SET_ARG_N(2,clState->buffer2);
-  //mix2_2
-//inactive kernel
-  num = 0;
-  CL_NEXTKERNEL_SET_ARG_N(0, clState->buffer1);
-  CL_SET_ARG_N(1, clState->buffer2);
-  //mix2_2
-
-  num = 0;
-  CL_NEXTKERNEL_SET_ARG_N(0, clState->padbuffer8);
-  CL_SET_ARG_N(1, clState->buffer1);
-  CL_SET_ARG_N(2, clState->buffer2);
-
-  //inactive kernel
-  num = 0;
-  CL_NEXTKERNEL_SET_ARG_N(0, clState->buffer1);
-  CL_SET_ARG_N(1, clState->buffer2);
-  //mix2_2
-
-
-//pbkdf and finalization
-    num=0;
-  CL_NEXTKERNEL_SET_ARG(clState->CLbuffer0);
-  CL_SET_ARG(clState->outputBuffer);
-  CL_SET_ARG(clState->buffer2);
-  CL_SET_ARG(clState->buffer3);
-  CL_SET_ARG(le_target);
 
   return status;
 }
@@ -1127,31 +1028,6 @@ static cl_int queue_decred_kernel(_clState *clState, dev_blk_ctx *blk, __maybe_u
   return status;
 }
 
-static cl_int queue_lbry_kernel(struct __clState *clState, struct _dev_blk_ctx *blk, __maybe_unused cl_uint threads)
-{
-  cl_kernel *kernel = &clState->kernel;
-  unsigned int num = 0;
-  cl_ulong le_target;
-  cl_int status = 0;
-
-  le_target = *(cl_ulong *)(blk->work->target + 24);
-  flip112(clState->cldata, blk->work->data);
-  status = clEnqueueWriteBuffer(clState->commandQueue, clState->CLbuffer0, true, 0, 112, clState->cldata, 0, NULL, NULL);
-
-  CL_SET_ARG(clState->CLbuffer0);
-  CL_SET_ARG(clState->padbuffer8);
-  num = 0;
-  kernel = clState->extra_kernels;
-  CL_SET_ARG_0(clState->padbuffer8);
-  num = 0;
-  
-  CL_NEXTKERNEL_SET_ARG(clState->padbuffer8);
-  CL_SET_ARG(clState->outputBuffer);
-  CL_SET_ARG(le_target);
-
-  return status;
-}
-
 static algorithm_settings_t algos[] = {
   // kernels starting from this will have difficulty calculated by using litecoin algorithm
 #define A_SCRYPT(a) \
@@ -1184,16 +1060,6 @@ static algorithm_settings_t algos[] = {
   { a, ALGO_DECRED, "", 1, 1, 1, 0, 0, 0xFF, 0xFFFFULL, 0x0, 0, 0, CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, decred_regenhash, decred_midstate, decred_prepare_work, queue_decred_kernel, gen_hash, append_blake256_compiler_options }
   A_DECRED("decred"),
 #undef A_DECRED
-
-#define A_YESCRYPT(a) \
-  { a, ALGO_YESCRYPT, "", 1, 65536, 65536, 0, 0, 0xFF, 0xFFFF000000000000ULL, 0x0000ffffUL, 0, -1, CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, yescrypt_regenhash, NULL, NULL, queue_yescrypt_kernel, gen_hash, append_neoscrypt_compiler_options}
-  A_YESCRYPT("yescrypt"),
-#undef A_YESCRYPT
-
-#define A_YESCRYPT_MULTI(a) \
-  { a, ALGO_YESCRYPT_MULTI, "", 1, 65536, 65536, 0, 0, 0xFF, 0xFFFF000000000000ULL, 0x0000ffffUL, 6,-1,CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE , yescrypt_regenhash, NULL, NULL, queue_yescrypt_multikernel, gen_hash, append_neoscrypt_compiler_options}
-  A_YESCRYPT_MULTI("yescrypt-multi"),
-#undef A_YESCRYPT_MULTI
 
   // kernels starting from this will have difficulty calculated by using quarkcoin algorithm
 #define A_QUARK(a, b) \
@@ -1252,8 +1118,6 @@ static algorithm_settings_t algos[] = {
   { "blake256r14", ALGO_BLAKE,     "", 1, 1, 1, 0, 0, 0xFF, 0xFFFFULL, 0x00000000UL, 0, 128, 0, blake256_regenhash, blake256_midstate, blake256_prepare_work, queue_blake_kernel, gen_hash, NULL },
   { "sia",         ALGO_SIA,       "", 1, 1, 1, 0, 0, 0xFF, 0xFFFFULL, 0x0000FFFFUL, 0, 128, 0, sia_regenhash, NULL, NULL, queue_sia_kernel, NULL, NULL },
   { "vanilla",     ALGO_VANILLA,   "", 1, 1, 1, 0, 0, 0xFF, 0xFFFFULL, 0x000000ffUL, 0, 128, 0, blakecoin_regenhash, blakecoin_midstate, blakecoin_prepare_work, queue_blake_kernel, gen_hash, NULL },
-
-  { "lbry", ALGO_LBRY, "", 1, 256, 256, 0, 0, 0xFF, 0xFFFFULL, 0x0000ffffUL, 2, 4 * 8 * 4194304, 0, lbry_regenhash, NULL, NULL, queue_lbry_kernel, gen_hash, NULL },
 
   { "pascal", ALGO_PASCAL, "", 1, 1, 1, 0, 0, 0xFF, 0xFFFFULL, 0x0000ffffUL, 0, 0, CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, pascal_regenhash, pascal_midstate, NULL, queue_pascal_kernel, NULL, NULL },
 

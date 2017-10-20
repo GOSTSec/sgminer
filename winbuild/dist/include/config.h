@@ -9,6 +9,7 @@
 #define CURL_HAS_KEEPALIVE 1
 #define HAVE_CURSES 1
 #define HAVE_ADL 1
+#define HAVE_NVML 1
 
 #define STDC_HEADERS 1
 #define EXECV_2ND_ARG_TYPE char* const*
@@ -58,6 +59,9 @@
 
 #ifdef HAVE_LIBCURL
 #define CURL_STATICLIB 1
+#pragma comment(lib, "ws2_32.lib")
+#pragma comment(lib, "zlib.lib")
+#pragma comment(lib, "openssl.lib")
 #pragma comment(lib, "libcurl_a.lib")
 #endif
 
@@ -67,16 +71,16 @@
 
 #endif
 
-#define VERSION "v5.2.0"
+#define VERSION "5.3.9"
 #define PACKAGE_NAME "sgminer"
 #define PACKAGE_TARNAME "sgminer"
-#define PACKAGE_VERSION "5.2.0"
-#define PACKAGE_STRING "sgminer 5.2.0"
+#define PACKAGE_VERSION "5.3.9"
+#define PACKAGE_STRING "sgminer 5.3.9"
 #define PACKAGE "sgminer"
 
 #define SGMINER_PREFIX ""
 
-#include "gitversion.h"
+//#include "gitversion.h"
 #include "winbuild.h"
 
 #endif
