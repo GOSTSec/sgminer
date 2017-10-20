@@ -2019,8 +2019,12 @@ static unsigned char *__gbt_merkleroot(struct pool *pool)
       memcpy(&merkle_hash[txns * 32], &merkle_hash[(txns - 1) * 32], 32);
       txns++;
     }
-    for (i = 0; i < txns; i += 2){
+    for (i = 0; i < txns; i += 2)
+	{
       unsigned char hashout[32];
+
+	  if (pool->algorithm.type == ALGO_GOSTCOIN) // TODO: delete after hard fork1
+	  	memcpy (merkle_hash + (i+1)*32, merkle_hash + i*32, 32);
 
       pool->algorithm.gen_hash(merkle_hash + (i * 32), 64, hashout);
       memcpy(merkle_hash + (i / 2 * 32), hashout, 32);
@@ -6152,7 +6156,7 @@ static void gen_stratum_work(struct pool *pool, struct work *work)
     memcpy(merkle_sha, merkle_root, 32);
     for (i = 0; i < pool->swork.merkles; i++) 
 	{
-	  if (pool->algorithm.type != ALGO_GOSTCOIN) // TODO: remove after hard fork 1	
+	  if (pool->algorithm.type == ALGO_GOSTCOIN) // TODO: remove after hard fork 1	
 		memcpy(merkle_sha + 32, merkle_sha, 32); 	
 	  else		
       	memcpy(merkle_sha + 32, pool->swork.merkle_bin[i], 32);
