@@ -78,12 +78,10 @@ sgminer_SOURCES += algorithm/lyra2rev2.c algorithm/lyra2rev2.h
 sgminer_SOURCES += algorithm/pluck.c algorithm/pluck.h
 sgminer_SOURCES += algorithm/sia.c algorithm/sia.h
 sgminer_SOURCES += algorithm/credits.c algorithm/credits.h
-sgminer_SOURCES += algorithm/yescrypt.h algorithm/yescrypt.c algorithm/yescrypt_core.h algorithm/yescrypt-opt.c algorithm/yescryptcommon.c algorithm/sysendian.h 
 sgminer_SOURCES += algorithm/blake256.c algorithm/blake256.h
 sgminer_SOURCES += algorithm/blakecoin.c algorithm/blakecoin.h
 sgminer_SOURCES += algorithm/decred.c algorithm/decred.h
 sgminer_SOURCES += algorithm/pascal.c algorithm/pascal.h
-sgminer_SOURCES += algorithm/lbry.c algorithm/lbry.h
 sgminer_SOURCES += algorithm/gostcoin.c algorithm/gostcoin.h
 
 bin_SCRIPTS	= $(top_srcdir)/kernel/*.cl

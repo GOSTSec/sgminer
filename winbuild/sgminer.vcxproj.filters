@@ -86,6 +86,9 @@
     <ClCompile Include="..\sph\fugue.c">
       <Filter>Source Files\sph</Filter>
     </ClCompile>
+    <ClCompile Include="..\sph\gost.c">
+      <Filter>Source Files\sph</Filter>
+    </ClCompile>
     <ClCompile Include="..\sph\groestl.c">
       <Filter>Source Files\sph</Filter>
     </ClCompile>
@@ -135,6 +138,9 @@
       <Filter>Source Files\algorithm</Filter>
     </ClCompile>
     <ClCompile Include="..\algorithm\fuguecoin.c">
+      <Filter>Source Files\algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\algorithm\gostcoin.c">
       <Filter>Source Files\algorithm</Filter>
     </ClCompile>
     <ClCompile Include="..\algorithm\groestlcoin.c">
@@ -310,6 +316,9 @@
     <ClInclude Include="..\sph\sph_hamsi.h">
       <Filter>Header Files\sph</Filter>
     </ClInclude>
+    <ClInclude Include="..\sph\sph_gost.h">
+      <Filter>Header Files\sph</Filter>
+    </ClInclude>
     <ClInclude Include="..\sph\sph_groestl.h">
       <Filter>Header Files\sph</Filter>
     </ClInclude>
@@ -341,6 +350,9 @@
       <Filter>Header Files\algorithm</Filter>
     </ClInclude>
     <ClInclude Include="..\algorithm\fuguecoin.h">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\algorithm\gostcoin.h">
       <Filter>Header Files\algorithm</Filter>
     </ClInclude>
     <ClInclude Include="..\algorithm\groestlcoin.h">
