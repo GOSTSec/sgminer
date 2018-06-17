@@ -5635,9 +5635,6 @@ static void *stratum_sthread(void *userdata)
     else if (pool->algorithm.type == ALGO_DECRED) {
       nonce = *((uint32_t *)(work->data + 140));
     }
-    else if (pool->algorithm.type == ALGO_LBRY) {
-      nonce = *((uint32_t *)(work->data + 108));
-    }
     else if (pool->algorithm.type == ALGO_SIA) {
       nonce = *((uint32_t *)(work->data + 32));
     }
@@ -7198,7 +7195,6 @@ static void rebuild_nonce(struct work *work, uint32_t nonce)
   uint32_t nonce_pos = 76;
   if (work->pool->algorithm.type == ALGO_CRE) nonce_pos = 140;
   else if (work->pool->algorithm.type == ALGO_DECRED) nonce_pos = 140;
-  else if (work->pool->algorithm.type == ALGO_LBRY) nonce_pos = 108;
   else if (work->pool->algorithm.type == ALGO_SIA) nonce_pos = 32;
   else if (work->pool->algorithm.type == ALGO_PASCAL) nonce_pos = 196;
 
@@ -7218,8 +7214,7 @@ bool test_nonce(struct work *work, uint32_t nonce)
   rebuild_nonce(work, nonce);
 
   // for Neoscrypt, the diff1targ value is in work->target
-  if (work->pool->algorithm.type == ALGO_NEOSCRYPT || work->pool->algorithm.type == ALGO_PLUCK
-    || work->pool->algorithm.type == ALGO_YESCRYPT || work->pool->algorithm.type == ALGO_YESCRYPT_MULTI) {
+  if (work->pool->algorithm.type == ALGO_NEOSCRYPT || work->pool->algorithm.type == ALGO_PLUCK) {
     diff1targ = ((uint32_t *)work->target)[7];
   }
   else {

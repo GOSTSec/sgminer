@@ -675,7 +675,6 @@ _clState *initCl(unsigned int gpu, char *name, size_t nameSize, algorithm_t *alg
   size_t readbufsize = 128;
   if (algorithm->type == ALGO_CRE) readbufsize = 168;
   else if (algorithm->type == ALGO_DECRED) readbufsize = 192;
-  else if (algorithm->type == ALGO_LBRY) readbufsize = 112;
   else if (algorithm->type == ALGO_PASCAL) readbufsize = 196;
 
   if (algorithm->rw_buffer_size < 0) {
