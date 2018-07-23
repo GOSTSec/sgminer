@@ -78,7 +78,8 @@ const char *algorithm_type_str[] = {
   "Decred",
   "Vanilla",
   "Sibcoin",
-  "Gostcoin"
+  "Gostcoin",
+  "Gostd"	
 };
 
 void sha256(const unsigned char *message, unsigned int len, unsigned char *digest)
@@ -1123,6 +1124,7 @@ static algorithm_settings_t algos[] = {
 
 
  { "gostcoin-mod", ALGO_GOSTCOIN, "", 1, 1, 1, 0, 0, 0xFF, 0xFFFFULL, 0x0000ffffUL, 0, 4 * 8 * 4194304, 0, gostcoin_regenhash, NULL, NULL, queue_gostcoin_mod_kernel, gostcoin_gen_hash, NULL },	
+ { "gostd", ALGO_GOSTD, "", 1, 1, 1, 0, 0, 0xFF, 0xFFFFULL, 0x0000ffffUL, 0, 4 * 8 * 4194304, 0, gostcoin_regenhash, NULL, NULL, queue_gostcoin_mod_kernel, gen_hash, NULL },	 
 
   // Terminator (do not remove)
   { NULL, ALGO_UNK, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL }
