@@ -1124,7 +1124,7 @@ static algorithm_settings_t algos[] = {
 
 
  { "gostcoin-mod", ALGO_GOSTCOIN, "", 1, 1, 1, 0, 0, 0xFF, 0xFFFFULL, 0x0000ffffUL, 0, 4 * 8 * 4194304, 0, gostcoin_regenhash, NULL, NULL, queue_gostcoin_mod_kernel, gostcoin_gen_hash, NULL },	
- { "gostd", ALGO_GOSTD, "", 1, 1, 1, 0, 0, 0xFF, 0xFFFFULL, 0x0000ffffUL, 0, 4 * 8 * 4194304, 0, gostcoin_regenhash, NULL, NULL, queue_gostcoin_mod_kernel, gen_hash, NULL },	 
+ { "gostd", ALGO_GOSTD, "gostcoin-mod", 1, 1, 1, 0, 0, 0xFF, 0xFFFFULL, 0x0000ffffUL, 0, 4 * 8 * 4194304, 0, gostcoin_regenhash, NULL, NULL, queue_gostcoin_mod_kernel, gen_hash, NULL },	 
 
   // Terminator (do not remove)
   { NULL, ALGO_UNK, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL }
@@ -1204,7 +1204,6 @@ static const char *lookup_algorithm_alias(const char *lookup_alias, uint8_t *nfa
   ALGO_ALIAS("lyra2v2", "lyra2rev2");
   ALGO_ALIAS("blakecoin", "blake256r8");
   ALGO_ALIAS("blake", "blake256r14");
-  ALGO_ALIAS("gostd", "gostcoin-mod");	
 
 #undef ALGO_ALIAS
 #undef ALGO_ALIAS_NF
